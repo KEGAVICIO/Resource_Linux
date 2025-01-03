@@ -1,0 +1,6 @@
+First download the packet tracer for cisco
+Then if you use "sudo dpkg -i cisco.deb"
+You see 2 error for libraries
+Then you need to download "sudo apt-get install libgl1-mesa-glx libxcb-xinerama0-dev"
+Or you can found the libraries in the network "https://github.com/PetrusNoleto/Error-in-install-cisco-packet-tracer-in-ubuntu-23.10-Dependency-is-not-satisfiable-libgl1-mesa-glx"
+Then when you install this you can use the sudo dpkg -i cisco.libxcb-xinerama0-dev

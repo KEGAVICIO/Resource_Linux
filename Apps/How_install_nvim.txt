@@ -1,0 +1,14 @@
+First we download neovim for github https://github.com/neovim/neovim/releases/tag/#version#
+Then you unzip with #tar -xzvf neovim#
+Then you need to create a folder "neovim" in the direction /opt/neovim
+Then you need move the unzip file for the new folder that you create
+Then you need execute this exe "/opt/neovim/nvim-linux64/bin/nvim"
+When you execute, you need to move for the usr folder ~
+If you use bash open the file bashrc, if you use zshrc open this file (you see what terminal with echo $SHELL)
+When you open you need to put this line in the file, preferences i like in the end of the file "export PATH=$PATH:/opt/neovim/nvim-linux64/bin"
+Then you need to reset your terminal source ~/.zshrc 
+Then you need to download a nerf font https://www.nerdfonts.com/font-downloads
+The you unzip and move the folder there ".local/share/" (create a folder like "fonts")
+Then reset the cache "fc-cache -fv"
+Now you can clonne the repository of nvchad git clone https://github.com/NvChad/starter ~/.config/nvim && nvim
+And only execute nvim and thats all
