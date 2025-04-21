@@ -1,0 +1,54 @@
+**************** ECHO **********************
+"echo #text#" te enseña el texto escrito despues de echo
+"echo $#text#" te enseña te enseña las variables que tiene
+"echo #texto# >> #archivo#" te escribe una nueva linea como cat
+"echo #texto# > #archivo#" te reinscribe todo lo de tu archivo
+
+************ More ************
+"more #direccion#" con esto vemos los diferentes datos de un archivo
+
+************ Less ************
+"less #direccion#" es lo mismo que more pero la diferencia es que te deja desplazarte a los lados 
+
+*********** head *************
+"head #archivo#" te enseña las primeras 10 lineas de un archivo
+
+**************** TAIL ************************
+"tail #archivo#" te enseña las ultimas 10 lineas de un archivo   
+"tail -n <number> #archivo#" te enseña las ultimas n lineas de un archivo
+"tail -f #archivo#" te repite el comando cada 2 segundos
+
+************** Grep ************************
+"grep #text# #donde#" grep es un comando para buscar info donde podemos buscar una palabra o texto en un lugar en especifico
+"ls | grep #text#" para buscar en una carpeta
+"grep -e #^kali#" nos ayuda con expresiones regulares especiales
+
+************** Uname *****************
+"uname" te enseña nombre del SO
+"uname -a" te enseña un poco mas a detalle las cosas del SO
+
+************** | *****************
+"cat kega | grep hear" la linea nos sirve para poner el siguiente comando sin tener que hacer uno por uno
+
+************ Encontrar un archivo *****************
+"find / -iname "*.nse"" Con esto buscara los archivos con terminacion .nse
+
+********************** cut *************************
+"cut #que quieres mostrar#" con esto solo te mostrara limitadamente lo que quieres ver
+
+********************** arp-scan ********************
+Para ejecutarlo correctamente, podemos usarlo en la direccion "/usr/local/share/arp-scan"
+y ejecutamos "sudo arp-scan -l -I wlan0"
+
+Explicacion:
+
+El comando cp en Linux crea una copia.
+Al escribir cp -r indicamos recursividad, es decir, que haga lo mismo con todos los elementos internos (archivos y subcarpetas)
+El nombre del directorio debe terminar con una barra (/), asi indicamos que se trata de una carpeta. Sin la barra, Linux considera que estamos manejando un archivo y nos dará error.
+Luego de un espacio se escribe el nombre del directorio de destino y su ruta (puede ser relativa al directorio origen o a la raiz)
+Las rutas del directorio de origen y el de destino pueden ser relativas a la raiz o al directorio de trabajo actual.
+
+**** Reparar intalacion de linux ****
+
+sudo apt --fix-broken install
+
