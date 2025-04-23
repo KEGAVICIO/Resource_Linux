@@ -517,9 +517,204 @@ Character	  Matches
 ==========================================================================================================================================
 $	          If the last character in the pattern, the pattern must be at the end of the line to match, otherwise just a literal $ character
 
+******************************************************************************************************************************************
+
+Shell Scripts in a Nutshell
+
+A shell script is a file of executable commands that has been stored in a text file. When the file is run, each command is executed. Shell scripts have access to all the commands of the shell, including logic.
+
+  echo "Hello, World!"
+
+This command have many uses
+"echo #text#" show the text in the terminal
+  KEGAVICIO@localhost:~$ echo "Hello, World!"
+  Hello, World
+
+"echo #texto# >> #archivo#" append the text in a file like the command cat 
+"echo #texto# > #archivo#" write a new file with the text that you put 
 
 
+To write a example script you need a file .sh that is a bash
 
+  #!/bin/sh                       or  #!/bin/bash
+  echo "Hello, World!"                echo "Hello, World!"
+
+To execute this file you can use 
+  KEGAVICIO@localhost:~$ sh test.sh
+  Hello, World!
+
+or you can use 
+  KEGAVICIO@localhost:~$ chmod +x ./test.sh
+  KEGAVICIO@localhost:~$ ./test.sh
+  Hello, World!
+
+******************************************************************************************************************************************
+
+Editing Shell Scripts Or Files 
+
+UNIX has many text editors. The merits of one over the other are often hotly debated. Two are specifically mentioned in the LPI Essentials syllabus: The GNU nano editor is a very simple editor well suited to editing small text files. The Visual Editor, vi, or its newer version, VI improved (vim), is a remarkably powerful editor but has a steep learning curve. We’ll focus on nano.
+
+I like more vim, you can found moods for this in the internet it most beautiful or you can make one 
+
+******************************************************************************************************************************************
+
+Variables In Scripts
+
+Variables are a key part of any programming language. A very simple use of variables is shown here:
+  #!/bin/bash
+
+  ANIMAL="penguin"
+  echo "My favorite animal is a $ANIMAL"
+
+It is important that there are no spaces between the name of the variable, the equals sign, and the item to be assigned to the variable. If you have a space there, you will get an odd error such as “command not found”. Capitalizing the name of the variable is not necessary but it is a useful convention to separate variables from commands to be executed.
+
+Another way to assign to a variable is to use the output of another command as the contents of the variable by enclosing the command in back ticks:
+
+  #!/bin/bash
+  CURRENT_DIRECTORY=`pwd`
+  echo "You are in $CURRENT_DIRECTORY"
+
+It is possible to get input from the user of your script and assign it to a variable through the read command:
+
+  #!/bin/bash
+
+  echo -n "What is your name? "
+  read NAME
+  echo "Hello $NAME!"
+
+There are some special variables in addition to the ones you set. You can pass arguments to your script:
+
+  #!/bin/bash
+  echo "Hello $1"
+
+A dollar $ sign followed by a number N corresponds to the Nth argument passed to the script. If you call the example above with ./test.sh World the output will be Hello World. The $0 variable contains the name of the script itself.
+
+Likewise you can set the exit code of your own script with the exit command:
+
+  #!/bin/bash
+  # Something bad happened!
+  exit 1
+
+The example above shows a comment #. Anything after the hash mark is ignored, which can be used to help the programmer leave notes. The exit 1 returns exit code 1 to the caller. This even works in the shell, if you run this script from the command line and then type echo $? you will see it returns 1.
+
+By convention, an exit code of 0 means “everything is OK”. Any exit codes greater than 0 mean some kind of error happened, which is specific to the program. Above you saw that grep uses 1 to mean the string was not found.
+
+******************************************************************************************************************************************
+
+Conditionals
+
+A basic if statement looks like this:
+
+  if somecommand; then
+    # do this if somecommand has an exit code of 0
+  fi
+
+Using what you know about grep, you can now write a script that does different things based on the presence of a string in the password file:
+
+  #!/bin/bash
+
+  if grep -q root /etc/passwd; then
+    echo root is in the password file
+  else
+    echo root is missing from the password file
+  fi
+
+Using test (you can found the command after)
+If you enclose your conditions in square brackets, it’s the same as running test. So, these statements are identical.
+
+  if test –f /tmp/foo; then
+  if [ -f /tmp/foo]; then
+
+The if statement has a final form that lets you do multiple comparisons at one time using elif (short for else if).
+
+  #!/bin/bash
+  
+  if [ "$1" = "hello" ]; then
+    echo "hello yourself"
+  elif [ "$1" = "goodbye" ]; then
+    echo "nice to have met you"
+    echo "I hope to see you again"
+  else
+    echo "I didn't understand that"
+  fi
+
+The if/elif/else tests can become quite verbose and complicated. The case statement provides a different way of making multiple tests easier.
+
+  #!/bin/bash
+  
+  case "$1" in
+  hello|hi)
+    echo "hello yourself"
+    ;;
+  goodbye)
+    echo "nice to have met you"
+    echo "I hope to see you again"
+    ;;
+  *)
+    echo "I didn't understand that"
+  esac
+
+
+******************************************************************************************************************************************
+
+The test command gives you easy access to comparison and file test operators. For example:
+
+Command	                          Description
+test –f /dev/ttyS0	              0 if the file exists
+test ! –f /dev/ttyS0	            0 if the file doesn’t exist
+test –d /tmp	                    0 if the directory exists
+test –x `which ls`	              substitute the location of ls then test if the user can execute
+test 1 –eq 1	                    0 if numeric comparison succeeds
+test ! 1 –eq 1	                  NOT – 0 if the comparison fails
+test 1 –ne 1	                    Easier, test for numeric inequality
+test “a” = “a”	                  0 if the string comparison succeeds
+test “a” != “a”	                  0 if the strings are different
+test 1 –eq 1 –o 2 –eq 2	          -o is OR: either can be the same
+test 1 –eq 1 –a 2 –eq 2	          -a is AND: both must be the same
+
+******************************************************************************************************************************************
+
+Loops
+
+for loops are used when you have a finite collection over which you want to iterate, such as a list of files, or a list of server names:
+
+  #!/bin/bash
+
+  SERVERS="servera serverb serverc"
+  for S in $SERVERS; do
+    echo "Doing something to $S"
+  done
+
+This example shows two more ways to pass a list.
+
+  #!/bin/bash
+
+  for NAME in Sean Jon Isaac David; do
+    echo "Hello $NAME"
+  done
+
+  for S in *; do
+    echo "Doing something to $S"
+  done
+
+The first loop is functionally the same as the previous example, except that the list is passed to the for loop directly instead of using a variable. Using a variable helps the clarity of the script as someone can easily make changes to the variable rather than looking at a loop.
+
+The second loop uses a * which is a file glob. This gets expanded by the shell to all the files in the current directory.
+
+The other type of loop, a while loop, operates on a list of unknown size. Its job is to keep running and on each iteration perform a test to see if it should run another time. You can think of it as “while some condition is true, do stuff.”
+
+  #!/bin/bash
+
+  i=0
+  while [ $i -lt 10 ]; do
+    echo $i
+    i=$(( $i + 1))
+  done
+  echo “Done counting”
+
+The example above shows a while loop that counts from 0 to 9. A counter variable, i, is initialized to 0. Then a while loop is run with the test being “is $i less than 10?” Note that the while loop uses the same notation as an if statement!
+
+******************************************************************************************************************************************
 
 SCP
  Comando transferir archivo

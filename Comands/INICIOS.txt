@@ -1,8 +1,3 @@
-**************** ECHO **********************
-"echo #text#" te enseña el texto escrito despues de echo
-"echo $#text#" te enseña te enseña las variables que tiene
-"echo #texto# >> #archivo#" te escribe una nueva linea como cat
-"echo #texto# > #archivo#" te reinscribe todo lo de tu archivo
 
 ************ More ************
 "more #direccion#" con esto vemos los diferentes datos de un archivo
