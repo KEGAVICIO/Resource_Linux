@@ -729,34 +729,46 @@ The example above shows a while loop that counts from 0 to 9. A counter variable
 
 ******************************************************************************************************************************************
 
-SCP
- Comando transferir archivo
-	 Windows a linux
-		scp .\Estadosdatos.sql oracle@172.20.10.139:/home/oracle/Documents/prueba/
-	 Linux a windows
-		scp /home/oracle/Documents/prueba/Estadosdatos.sql kega@172.20.10.137:C:\Users\kega0\OneDrive\Documentos\ITQ\S8\BDA\
+Process 
+
+You can see a snapshot for what processes you run with the command 'ps'
+
+  KEGAVICIO@localhost:~$ ps
+   PID TTY          TIME CMD
+  6054 ?        00:00:00 bash
+  6070 ?        00:00:01 xeyes
+  6090 ?        00:00:01 firefox
+  6146 ?        00:00:00 ps
+
+If you run ps with the option --forest, then, similar to the pstree command, it shows lines indicating the parent and child relationship:
+
+  KEGAVICIO@localhost:~$ ps --forest
+   PID TTY          TIME CMD
+  6054 ?        00:00:00 bash
+  6090 ?        00:00:02   \_ firefox
+  6180 ?        00:00:00   \_ dash
+  6181 ?        00:00:00        \_ xeyes
+  6188 ?        00:00:00        \_ ps
+  
+More information in the file Data_Stored.txt
+
+******************************************************************************************************************************************
+
+Command "|"
+  This can help to use two or more commands in one line 
+  Example 
+  ps -fe | greep firefox
+
+  KEGAVICIO@localhost:~$ ps -ef | grep firefox
+  6090 pts/0    00:00:07 firefox
+
+******************************************************************************************************************************************
 
 KILL
-	mata los procesos
+  
+This command help if you dont like some process, only need the PID or ID and only execute the command 
+  KEGAVICIO@localhost:~$ kill -9 6090
 
-PS
- Con esto vemos los servicios que estan corriendo
- PS -f Con esto vemos de donde estan llamando los datos
- PS -fe Con esto vemos todos los procesos sin problemas
+  the number 9 is immediate kill 
 
 
-pai “|ˮ
- sirve para convinar comandos ps -fe | grep FREE
- 
-ps -ef | grep PMON # Comando para ver que las instancias esten corriendo 
-
-Rwx -> Se puede leer, escribir y ejecutar
-Rw -> Se puede leer y escribir
-	Los siguientes especifican que puede hacer EL GRUPO con el archivo
-	Los últimos 3 caracteres significan que pueden hacer el resto de usuarios
-
-PARA MODIFICAR PERMISOS PODEMOS HACER LO SIGUIENTE
-Chmod (que quiero modificar)
-	NECESITAMOS CONVERTIR LOS GRUPOS DE 3 DE BINARIO A DECIMAL
-	Por ejemplo (rwx = 111)
-	Chmod 644 (Nombre archivo)
