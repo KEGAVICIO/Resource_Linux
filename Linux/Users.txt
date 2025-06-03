@@ -1,0 +1,413 @@
+                ---------------------------------------
+
+                **  **  ******  ******  ******   ******
+                **  **  **      **      **   **  **
+                **  **  ****    ******  **   **  ****
+                **  **   ****   ******  ******    ****
+                ******      **  **      **  **       **
+                ******  ******  ******  **   **  ******
+
+                ---------------------------------------
+
+===========================================================================================================================================
+
+1- Groups
+
+The most common reason to create a group is to provide a way for users to share files.
+After creating or modifying a group, you can verify the changes by viewing the group configuration information in the /etc/group file with the grep command. If working with network-based authentication services, then the getent command can show you both local and network-based groups.
+
+  grep pattern filename
+  getent database record
+
+===========================================================================================================================================
+
+2- Creating A Group
+
+The groupadd command can be executed by the root user to create a new group. The command requires only the name of the group to be created. The -g option can be used to specify a group id for the new group:
+
+  root@localhost:~# groupadd -g 1005 research
+
+If the -g option is not provided, the groupadd command will automatically provide a GID for the new group. To accomplish this, the groupadd command looks at the /etc/group file and uses a number that is one value higher than the current highest GID number.
+
+===========================================================================================================================================
+
+3- Group ID Considerations
+
+In some Linux distributions, particularly those based upon Red Hat, when a user ID (UID) is created, a user private group (UPG) is also created with that user as its only member. In these distributions, the UID and the ID of the UPG are supposed to match (be the same number).
+
+Therefore, you should avoid creating GIDs in the same numeric ranges where you expect to create UIDs, to avoid a conflict between a GID you create and a UPG number that is created to match a UID.
+
+GIDs under either 500 (RedHat) or 1000 (Debian) are reserved for system use. There may be times at which you want to assign a lower GID value. To accomplish this, use the -r option which assigns the new group a GID that is less than the lowest standard GIDs
+
+===========================================================================================================================================
+
+4- Group Naming Considerations
+
+Following these guidelines for group names can help to select a group name that is portable (function correctly with other systems or services):
+
+  The first character of the name should be either an underscore _ character or a lowercase alphabetic a-z character.
+  Up to 32 characters are allowed on most Linux distributions, but using more than 16 can be problematic as some distributions may not accept more than 16.
+  After the first character, the remaining characters can be alphanumeric, a dash - character or an underscore _ character.
+  The last character should not be a hyphen - character.
+
+===========================================================================================================================================
+
+5- Modifying a Group 
+
+The groupmod command can be used to either change the name of a group with the -n option or change the GID for the group with the -g option.
+Changing the name of the group may confuse users who were familiar with the old name and haven't been informed of the new name. However, changing the group name won't cause any problems with accessing files, since the files are owned by GIDs, not group names.
+
+  root@localhost:~# ls -l index.html
+  -rw-r-----. 1 root sales 0 Aug  1 13:21 index.html
+  root@localhost:~# groupmod -n clerks sales
+  root@localhost:~# ls -l index.html
+  -rw-r-----. 1 root clerks 0 Aug  1 13:21 index.html
+
+===========================================================================================================================================
+
+6- Deleting a Group 
+
+If you decide to delete a group with the groupdel command, be aware that any files that are owned by that group will become orphaned.
+
+Only supplemental groups can be deleted, so if any group that is the primary group for any user, it cannot be deleted. The administrator can modify which group is a user's primary group, so a group that was being used as a primary group can be made into a supplemental group and then can be deleted.
+
+As long as the group to be deleted is not a user's primary group, deleting the group is accomplished by using the groupdel command along with the name of the group:
+
+  root@localhost:~# groupdel clerks
+
+===========================================================================================================================================
+
+7- Users 
+
+User account information is stored in the /etc/passwd file and user authentication information (password data) is stored in the /etc/shadow file.
+By using an appropriate command to add a new user, these files can be modified automatically and safely. If you were to modify these files manually, you would risk making a mistake that could prevent all users from being able to log in normally.
+
+Before you begin creating users for your system, you should verify or establish practical values that are used by default with the useradd command. These settings can be found in the configuration files that are used by the useradd command.
+
+===========================================================================================================================================
+
+8- User Configuration Files 
+
+The -D option to the useradd command allows you to view or change some of the default values used by the useradd command. The values shown by useradd -D can also be viewed or updated by manipulating the /etc/default/useradd file:
+
+  root@localhost:~# useradd -D 
+  GROUP=100
+  HOME=/home
+  INACTIVE=-1
+  EXPIRE=
+  SHELL=/bin/bash
+  SKEL=/etc/skel
+  CREATE_MAIL_SPOOL=yes
+
+The following describes each of these values:
+
+Group
+
+  GROUP=100
+  In distributions not using UPG, this is the default primary group for a new user, if one is not specified with the useradd command. This is usually the users group with a GID of 100.
+
+  This setting affects the primary group ID field of the /etc/passwd file highlighted below:
+
+    bob:x:600:600:bob:/home/bob:/bin/bash
+  The -g option to the useradd command allows you to use a different primary group than the default when creating a new user account.
+
+Home
+
+  HOME=/home
+  The /home directory is the default base directory under which the user's new home directory is created. This means that a user with an account name of bob would have a home directory of /home/bob.
+
+  This setting affects the home directory field of the /etc/passwd file highlighted below:
+
+    bob:x:600:600:bob:/home/bob:/bin/bash
+  The -b option to the useradd command allows you to use a different base directory group than the default when creating a new user account.
+
+Inactive
+
+  INACTIVE=-1
+  This value represents the number of days after the password expires that the account is disabled. A value of -1 means this feature is not enabled by default and no "inactive" value is provided for new accounts by default.
+
+  This setting affects the inactive field of the /etc/shadow file highlighted below:
+
+    bob:pw:15020:5:30:7:60:15050:
+  The -f option to the useradd command allows you to use a different INACTIVE value than the default when creating a new user account.
+
+Expire
+
+  EXPIRE=
+  By default, there is no value set for the expiration date. Usually, an expiration date is set on an individual account, not all accounts by default.
+
+  For example, if you had a contractor that was hired to work until the end of the day on November 1, 2019, then you could ensure that they would be unable to log in after that date by using the EXPIRE field.
+
+  This setting affects the expire field of the /etc/shadow file highlighted below:
+
+    bob:pw:15020:5:30:7:60:15050:
+  The -e option to the useradd command allows you to use a different EXPIRE value than the default when creating a new user account.
+
+Shell
+
+  SHELL=/bin/bash
+  The SHELL setting indicates the default shell for a user when they log in to the system.
+
+  This setting affects the shell field of the /etc/passwd file highlighted below:
+
+    bob:x:600:600:bob:/home/bob:/bin/bash
+  The -s option to the useradd command allows you to use a different login shell than the default when creating a new user account.
+
+Skeleton Directory
+
+  SKEL=/etc/skel
+  The SKEL value determines which skeleton directory has its contents copied into the new user’s home directory. The contents of this directory are copied into the new user's home directory, and the new user is given ownership of the new files.
+  
+  This setting provides administrators with an easy way to populate a new user account with key configuration files.
+
+  The -k option to the useradd command allows you to use a different SKEL directory than the default when creating a new user account.
+
+Create Mail Spool
+
+  CREATE_MAIL_SPOOL=yes
+  A mail spool is a file where incoming email is placed.
+
+  Currently, the value for creating a mail spool is yes, which means that users by default are configured with the ability to receive and store local mail. If you are not planning on using local mail, then this value could be changed to no.
+
+To modify one of the useradd default values, the /etc/default/useradd file could be edited with a text editor. Another (safer) technique is to use the useradd -D command.
+
+===========================================================================================================================================
+
+
+9- User Configuration Files 
+
+The /etc/login.defs file also contains values that are applied by default to new users you create with the useradd command. Unlike the /etc/default/useradd file, the /etc/login.defs file is usually edited directly by the administrator to alter its values.
+
+This file contains many comments and blank lines, so to only view lines that are not comments or blank lines (the real configuration settings), then you can use the following grep command:
+
+  root@localhost:~#  grep -Ev '^#|^$' /etc/login.defs
+  MAIL_DIR	/var/mail/spool
+  PASS_MAX_DAYS	99999
+  PASS_MIN_DAYS	0
+  PASS_MIN_LEN	5
+  PASS_WARN_AGE	7
+  UID_MIN			  500
+  UID_MAX			60000
+  GID_MIN			  500
+  GID_MAX			60000
+  CREATE_HOME	yes
+  UMASK           077
+  USERGROUPS_ENAB yes
+  ENCRYPT_METHOD SHA512
+  MD5_CRYPT_ENAB no
+
+The above example represents a typical CentOS 6 distribution /etc/login.defs file with its values. The following describes each of these values:
+
+Mail Directory
+
+  MAIL_DIR		/var/mail/spool
+  The directory in which the user's mail spool file is created.
+
+Password Maximum Days
+
+  PASS_MAX_DAYS	99999
+  This setting determines the maximum number of days that a user can continue to use the same password. Since it defaults to 99999 days (over 200 years) it effectively means users never have to change their password.
+
+Password Minimum Days
+
+  PASS_MIN_DAYS	0
+  With this set to a default value of zero, the shortest time that a user is required to keep a password is zero days, which means that they can immediately change a password that they have just set.
+
+  If the PASS_MIN_DAYS value was set to three days, then after setting a new password, the user would have to wait three days before they could change it again.
+
+Password Minimum Length
+
+  PASS_MIN_LEN	5
+  This indicates the minimum number of characters that a password must contain.
+
+Password Warning
+
+  PASS_WARN_AGE	7
+  This is the default for the warning field. As a user approaches the maximum number of days that they can use their password, the system checks to see if it is time to start warning the user about changing their password at login.
+
+UID Minimum
+
+  UID_MIN			  500
+  The UID_MIN determines the first UID that is assigned to an ordinary user. Any UID less than this value would either be for a system account or the root account.
+
+UID Maximum
+
+  UID_MAX			60000
+  A UID technically could have a value of over four billion. For maximum compatibility, it's recommended to leave it at its default value of 60000.
+
+GID Minimum
+
+  GID_MIN			  500
+  The GID_MIN determines the first GID that is assigned to an ordinary group. Any group with a GID less than this value would either be a system group or the root group.
+
+GID Maximum
+
+  GID_MAX			60000
+  A GID, like a UID, could have a value of over four billion. Whatever value you use for your UID_MAX, should be used for GID_MAX to support UPG.
+
+Home Directory
+
+  CREATE_HOME	yes
+  The value of this determines whether or not a new directory is created for the user when their account is created.
+
+Umask
+
+  UMASK           077
+  UMASK works at the time the user home directory is being created; it determines what default permissions are placed on this directory. Using the default value of 077 for UMASK means that only the user owner has any kind of permission to access their directory.
+
+UPG
+
+  USERGROUPS_ENAB yes
+  In distributions that feature a private group for each user, as this CentOS example shows, the USERGROUPS_ENAB will have a value of yes. If UPG is not used in the distribution, then this will have a value of no.
+
+Encryption
+
+  ENCRYPT_METHOD SHA512
+  The encryption method that is used to encrypt the users' passwords in the /etc/shadow file. The ENCRYPT_METHOD setting overrides the MD5_CRYPT_ENAB setting.
+
+Encryption (Deprecated)
+
+  MD5_CRYPT_ENAB no
+  This deprecated setting originally allowed the administrator to specify using MD5 encryption of passwords instead of the original DES encryption. It has been superseded by the ENCRYPT_METHOD setting.
+
+===========================================================================================================================================
+
+10- Account Considerations
+
+Username
+
+The only required argument for the useradd command is the name you want the account to have. The username should follow the same guidelines as for group names.
+  The first character of the name should be either an underscore _ character or a lower-case alphabetic a-z character.
+  Up to 32 characters are allowed on most Linux distributions, but using more than 16 can be problematic as some distributions may not accept more than 16.
+  After the first character, the remaining characters can be alphanumeric, a dash - character or an underscore _ character.
+  The last character should not be a hyphen - character.
+
+User Identifier (UID)
+
+  Once you create a user with a specific UID, the system generally increments the UID by one for the next user that you create. If attached to a network with other systems, you may want to ensure that this UID is the same on all systems to help provide consistent access.
+
+  Adding the -u option to the useradd command allows you to specify the UID number. UIDs typically can range anywhere from zero to over four billion, but for greatest compatibility with older systems, the maximum recommended UID value is 60,000.
+
+Primary Group
+
+  In distributions which feature UPG, this group is created automatically with a GID and group name that matches the UID and username of the newly created user account. In distributions not using UPG, the primary group ordinarily defaults to the users group with a GID of 100.
+
+Supplementary Group
+
+  To make the user a member of one or more supplementary groups, the -G option can be used to specify a comma-separated list of group names or numbers. 
+
+Home Directory
+
+  By default, most distributions create the user's home directory with the same name as the user account underneath whichever base directory is specified in the HOME setting of the /etc/default/useradd file, which typically specifies the /home directory. For example, if creating a user account named jane, the user's new home directory would be /home/jane.
+
+Skeleton Directory
+
+  By default, the contents of the /etc/skel directory are copied into the new user's home directory. The resulting files are also owned by the new user. By using the -k option with the useradd command, the contents of a different directory can be used to populate a new user's home directory. When specifying the skeleton directory with the -k option, the -m option must be used or else the useradd command will fail with an error.
+
+Shell
+
+  While the default shell is specified in the /etc/default/useradd file, it can also be overridden with the useradd command using the -s option at the time of account creation
+
+Comment
+
+  The comment field, originally called the General Electric Comprehensive Operating System (GECOS) field, is typically used to hold the user's full name. Many graphical login programs display this field's value instead of the account name. The -c option of the useradd command allows for the value of this field to be specified.
+
+==========================================================================================================================================
+
+11- Creating a User 
+
+Once you've verified which default values to use and you've gathered the information about the user, then you are ready to create a user account. An example of a useradd command using a few options looks like the following:
+
+  root@localhost:~# useradd -u 1009 -g users -G sales,research -m -c 'Jane Doe' jane 
+
+==========================================================================================================================================
+
+12- Passwords 
+
+There are numerous factors to consider when you are trying to choose a password for an account:
+
+  Length: The /etc/login.defs file allows the administrator to specify the minimum length of the password. While some believe that the longer the password, the better, this isn't really correct. The problem with passwords that are too long is that they are not easily remembered and, as a result, they are often written down in a place where they can easily be found and compromised.
+
+  Composition: A good password should be composed of a combination of alphabetic, numeric and symbolic characters.
+
+  Lifetime: The maximum amount of time that a password can be used should be limited for several reasons:
+
+    If an account is compromised and the time that the password is valid is limited, the intruder will ultimately lose access when the password becomes invalid.
+    If an account is not being used, then it can automatically be disabled when the password is no longer valid.
+    If attackers are attempting a "brute-force" attack by trying every possible password, then the password can be changed before the attack can succeed.
+
+  However, requiring a user to change their password too often might pose security problems, including:
+
+    The quality of the password the user chooses might suffer.
+    The user may start writing their password on paper, increasing the possibility that the password may be discovered.
+    Seldom used user accounts may become expired and require administrative attention to reset.
+
+==========================================================================================================================================
+
+13- Setting a User Password 
+
+There are several ways for a user password to be changed. The user can execute the passwd command, the administrator can execute the passwd command providing the username as an argument, or graphical tools are also available.
+
+The administrator can use the passwd command to either set the initial password or change the password for the account.
+
+While regular users must follow many password rules, the root user only needs to follow one rule: the password cannot be left blank. When the root user violates all other password rules that normally apply to regular users, it results in a warning being printed to the screen and the rule not being enforced:
+
+  root@localhost:~# passwd Jane
+  Enter new UNIX password:
+  BAD PASSWORD: it is WAY to short
+  BAD PASSWORD: is too simple
+  Retype new UNIX password:
+
+==========================================================================================================================================
+
+14- Managing Password Aging
+
+The chage command provides many options for managing the password aging information found in the /etc/shadow file.
+
+Here's a summary of the chage options:
+
+Short Option   | Long Option	            | Description
+-l	           | --list	                  | List the account aging information
+-d LAST_DAY    | --lastday LAST_DAY	      | Set the date of the last password change to LAST_DAY
+-E EXPIRE_DATE | --expiredate EXPIRE_DATE | Set account to expire on EXPIRE_DATE
+-h	           | --help                   | Show the help for the chage command
+-I INACTIVE	   | --inactive INACTIVE	    | Set account to permit login for INACTIVE days after password expires
+-m MIN_DAYS	   | --mindays MIN_DAYS	      | Set the minimum number of days before the password can be changed to MIN_DAYS
+-M MAX_DAYS	   | --maxdays MAX_DAYS	      | Set the maximum number of days before a password should be changed to MAX_DAYS
+-W WARN_DAYS	 | --warndays WARN_DAYS     |	Set the number of days before a password expires to start displaying a warning to WARN_DAYS
+
+==========================================================================================================================================
+
+15- Modifying a User 
+
+The usermod command offers many options for modifying an existing user account. Many of these options are also available with the useradd command at the time the account is created. The following chart provides a summary of the usermod options:
+
+Short Option	 | Long Option	            | Description
+-c	           | COMMENT	                | Sets the value of the GECOS or comment field to COMMENT.
+-d HOME_DIR	   | --home HOME_DIR	        | Sets HOME_DIR as a new home directory for the user.
+-e EXPIRE_DATE | --expiredate EXPIRE_DATE | Set account expiration date to EXPIRE_DATE.
+-f INACTIVE	   | --inactive INACTIVE	    | Set account to permit login for INACTIVE days after password expires.
+-g GROUP	     | --gid GROUP	            | Set GROUP as the primary group.
+-G GROUPS	     | --groups GROUPS	        | Set supplementary groups to a list specified in GROUPS.
+-a	           | --append	                | Append the user's supplemental groups with those specified by the -G option.
+-h	           | --help	                  | Show the help for the usermod command.
+-l NEW_LOGIN	 | --login NEW_LOGIN	      | Change the user's login name.
+-L	           | --lock	                  | Lock the user account.
+-s SHELL	     | --shell SHELL	          | Specify the login shell for the account.
+-u NEW_UID	   | --uid NEW_UID	          | Specify the user's UID to be NEW_UID.
+-U	           | --unlock	                | Unlock the user account.
+
+==========================================================================================================================================
+
+16- Deleting a User
+
+The userdel command is used to delete users. When you delete a user account, you also need to decide whether to delete the user's home directory. The user's files may be important to the organization, and there may even be legal requirements to keep the data for a certain amount of time, so be careful not to make this decision lightly. Also, unless you've made backup copies of the data, once you've executed the command to delete the user and their files, there is no reversing the action.
+
+To delete the user jane without deleting the user's home directory /home/jane, execute:
+
+  root@localhost:~# userdel jane
+Beware that deleting a user without deleting their home directory means that the user's home directory files will be orphaned and these files will be owned solely by their former UID and GID.
+
+To delete the user, home directory, and mail spool as well, use the -r option:
+
+  root@localhost:~# userdel -r jane

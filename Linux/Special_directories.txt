@@ -1,0 +1,177 @@
+                ------------------------------------------------------
+
+                ******  ******  ******  ******  ******  ******  **
+                **      **  **  **      ******  ******  **  **  **  
+                 ****   ******  ******  **        **    **  **  **
+                  ****  ***     ******  **        **    ******  **  
+                    **  ***     **      ******  ******  **  **  ******
+                ******  ***     ******  ******  ******  **  **  ******
+
+                ------------------------------------------------------
+
+===========================================================================================================================================
+
+1- Setuid 
+
+When the setuid permission is set on an executable binary file (a program) the binary file is run as the owner of the file, not as the user who executed it. This permission is set on a handful of system utilities so that they can be run by normal users, but executed with the permissions of root, providing access to system files that the normal user doesn't normally have access to.
+
+Consider the following scenario in which the user sysadmin attempts to view the contents of the /etc/shadow file:
+
+  sysadmin@localhost:~$ more /etc/shadow
+  /etc/shadow: Permission denied
+  sysadmin@localhost:~$ ls -l /etc/shadow
+  -rw-r-----. 1 root root 5195 Oct 21 19:57 /etc/shadow
+
+The permissions on /etc/shadow do not allow normal users to view (or modify) the file. Since the file is owned by the root user, the administrator can temporarily modify the permissions to view or modify this file.
+
+===========================================================================================================================================
+
+2- Setgid
+
+The setgid permission is similar to setuid, but it makes use of the group owner permissions. There are two forms of setgid permissions: setgid on a file and setgid on a directory. The behavior of setgid depends on whether it is set on a file or directory.
+
+In Files 
+
+  The setgid permission on a file is very similar to setuid; it allows a user to run an executable binary file in a manner that provides them additional (temporary) group access. The system allows the user running the command to effectively belong to the group that owns the file, but only in the setgid program.
+
+  A good example of the setgid permission on an executable file is the /usr/bin/wall command. Notice the permissions for this file as well as the group owner:
+
+    sysadmin@localhost:~$ ls -l /usr/bin/wall
+    -rwxr-sr-x 1 root tty 30800 May 16  2018 /usr/bin/wall
+
+On Directories 
+
+  By default when the ls command is executed on a directory, it outputs information on the files contained within the directory. To view information about the directory itself add the -d option. Used with the -l option, it can be used to determine if the setgid permission is set. The following example shows that the /tmp/data directory has the setgid permission set and that it is owned by the demo group.
+
+    sysadmin@localhost:~$ ls -ld /tmp/data
+    drwxrwsrwx. 2 root demo 4096 Oct 30 23:20 /tmp/data
+
+===========================================================================================================================================
+
+3- Setting Setgid 
+
+Use the following syntax to add the setgid permission symbolically:
+  chmod g+s <file|directory>
+
+To add the setgid permission numerically, add 2000 to the file's existing permissions (assume in the following example that the directory originally had 775 for its permissions):
+  chmod 2775 <file|directory>
+
+To remove the setgid permission symbolically, run:
+  chmod g-s <file|directory>
+
+To remove the setgid permission numerically, subtract 2000 from the file's existing permissions:
+  chmod 0775 <file|directory>
+
+===========================================================================================================================================
+
+4- Sticky Bit
+
+The sticky bit permission is used to prevent other users from deleting files that they do not own in a shared directory. Recall that any user with write permission on a directory can create files in that directory, as well as delete any file in the directory, even if they do not own the file!
+
+The output of the ls -l command displays the sticky bit by a t character in the execute bit of the others permission group:
+
+  sysadmin@localhost:~$ ls -ld /tmp                                               
+  drwxrwxrwt 1 root root 4096 Mar 14  2016 /tmp                                   
+
+A lowercase t means that both the sticky bit and execute permissions are set for others. An uppercase T means that only the sticky bit permission is set.
+
+While the capital S indicated a problem with the setuid or setgid permissions, a capital T does not necessarily indicate a problem, as long as the group owner still has the execute permission.
+
+To set the sticky bit permission symbolically, execute a command like the following:
+  chmod o+t <directory>
+
+To set the sticky bit permission numerically, add 1000 to the directory's existing permissions (assume the directory in the following example originally had 775 for its permissions):
+  chmod 1775 <file|directory>
+
+To remove the sticky permission symbolically, run:
+  chmod o-t <directory>
+
+To remove the sticky bit permission numerically, subtract 1000 from the directory's existing permissions:
+  chmod 0775 <directory>
+
+===========================================================================================================================================
+
+5- Links 
+
+Consider a scenario where there is a file deeply buried in the file system called:
+
+  /usr/share/doc/superbigsoftwarepackage/data/2013/october/tenth/valuable-information.txt
+
+Another user routinely updates this file, and you need to access it regularly. The long file name is a not an ideal choice for you to type, but the file must reside in this location. It is also updated frequently, so you can't simply make a copy of the file.
+
+==========================================================================================================================================
+
+6- Creating Hard Links
+
+Every file on a partition has a unique identification number called an inode number. The ls -i command displays the inode number of a file.
+
+  sysadmin@localhost:~$ ls -i /tmp/file.txt                                       
+215220874 /tmp/file.txt   
+
+Like users and groups, what defines a file is not its name, but rather the number it has been assigned. The inode table does not include the file name. For each file, there is also an entry that is stored in a directory's data area (data block) that includes an association between an inode number and a file name.
+
+In the data block for the /etc directory, there would be a list of all of the files in this directory and their corresponding inode number. For example:
+
+File Name	| Inode Number
+passwd	  | 123
+shadow	  | 175
+group	    | 144
+gshadow	  | 897
+
+
+When you attempt to access the /etc/passwd file, the system uses this table to translate the file name into an inode number. It then retrieves the file data by looking at the information in the inode table for the file.
+
+Hard links are two file names that point to the same inode. For example, consider the following directory entries:
+
+File Name | Inode Number
+passwd	  | 123
+mypasswd	| 123
+shadow	  | 175
+group	    | 144
+gshadow	  | 897
+
+To create hard links, the ln command is used with two arguments. The first argument is an existing file name to link to, called a target, and the second argument is the new file name to link to the target.
+
+ln target link_name
+
+==========================================================================================================================================
+
+7- Creating Symbolic Links 
+
+A symbolic link, also called a soft link, is simply a file that points to another file. There are several symbolic links already on the system, including several in the /etc directory:
+
+  sysadmin@localhost:~$ ls -l /etc/grub.conf
+  lrwxrwxrwx. 1 root root 22 Feb 15  2011 /etc/grub.conf -> ../boot/grub/grub.conf
+
+To create a symbolic link, use the -s option with the ln command:
+
+ln -s target link_name
+
+==========================================================================================================================================
+
+8- Comparing Hard and Symbolic Links 
+
+Advantage: Hard links don’t have a single point of failure.
+
+One of the benefits of using hard links is that every file name for the file content is equivalent. If you have five files hard linked together, then deleting any four of these files would not result in deleting the actual file contents.
+
+Recall that a file is associated with a unique inode number. As long as one of the hard linked files remains, then that inode number still exists, and the file data still exists.
+
+Advantage: Soft links are easier to see.
+
+Sometimes it can be difficult to know where the hard links to a file exist. If you see a regular file with a link count that is greater than one, you can use the find command with the -inum search criteria to locate the other files that have the same inode number.
+
+Advantage: Soft links can link to any file.
+
+Since each file system (partition) has a separate set of inodes, hard links cannot be created that attempt to cross file systems:
+
+  sysadmin@localhost:~$ ln /boot/vmlinuz-2.6.32-358.6.1.el6.i686 Linux.Kernel
+  ln: creating hard link `Linux.Kernel' => `/boot/vmlinuz-2.6.32-358.6.1.el6.i686': Invalid cross-device link
+
+In the previous example, a hard link was attempted to be created between a file in the /boot file system and the / file system; it failed because each of these file systems has a unique set of inode numbers that can't be used outside of the filesystem.
+
+Advantage: Soft links can link to a directory.
+
+Another limitation of hard links is that they cannot be created on directories. The reason for this limitation is that the operating system itself uses hard links to define the hierarchy of the directory structure. 
+
+
