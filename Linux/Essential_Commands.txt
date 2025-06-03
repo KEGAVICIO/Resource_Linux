@@ -1,0 +1,774 @@
+                ------------------------------------------------------------------------
+
+                ******  ******  ******  ******  **    **  ******  ******  ******  **
+                **      **      **      **      ***   **  ******  ******  **  **  **
+                ******  ****    ****    ******  ** *  **    **      **    **  **  **
+                ******   ****    ****   ******  **  * **    **      **    ******  **
+                **          **      **  **      **   ***    **    ******  **  **  ******
+                ******  ******  ******  ******  **    **    **    ******  **  **  ******
+
+                ------------------------------------------------------------------------
+
+*******************************************************************************************************************************************
+
+Type
+
+The type command can be used to determine information about command type.
+  type %command%
+
+*******************************************************************************************************************************************
+
+Which
+
+This command display the full path to the command.
+  which %command%
+
+Example:
+  KEGAVICIO@localhost:~$ which ls                                       
+  /bin/ls 
+
+*******************************************************************************************************************************************
+
+Man
+
+The man command uses a pager to display documents.
+You can move with the rows or exit with "q"
+  man command
+
+*******************************************************************************************************************************************
+
+PWD
+
+To determine where the user is currently located within the filesystem, the pwd (print working directory) command can be used:
+  pwd
+
+Example:
+  KEGAVICIO@localhost:~$ pwd
+  /home/KEGAVICIO
+
+*******************************************************************************************************************************************
+
+CD
+
+To navigate the filesystem, use the cd (change directory) command.
+  cd [options] [path]
+
+Example:
+  KEGAVICIO@localhost:~$ cd Documents
+  KEGAVICIO@localhost:~/Documents$
+
+When used with no arguments, the cd command will take the user to their home directory.
+
+Example:
+  KEGAVICIO@localhost:~/Documents$ cd 
+  KEGAVICIO@localhost:~$
+
+Then you can use the absolute paths like:
+  KEGAVICIO@localhost:~/Documents$ cd home/KEGAVICIO
+  KEGAVICIO@localhost:~$
+
+You can use "cd .." to go back to a directory
+  KEGAVICIO@localhost:~/Documents$ cd ..
+  KEGAVICIO@localhost:~$
+
+You can use like this:
+  KEGAVICIO@localhost:~/Documents/School$ cd ../../Downloads
+  KEGAVICIO@localhost:~/Downloads$
+
+*******************************************************************************************************************************************
+
+LS
+
+This ls command is used to display the contents of a directory and can provide detailed information about the files. By default, when it is used with no options or arguments, it lists the files in the current directory:
+
+  KEGAVICIO@localhost:~$ ls                                               
+  Desktop  Documents  Downloads  Music  Pictures  Public  Templates  Videos
+
+To display all files, including hidden files, use the -a option to the ls command:
+  KEGAVICIO@localhost:~$ ls -a                                            
+  .             .bashrc   .selected_editor  Downloads  Public           
+  ..            .cache    Desktop           Music      Templates         
+  .bash_logout  .profile  Documents         Pictures   Videos
+
+To use the -d option in a meaningful way requires the addition of the -l option. In this case, note that the following command lists the details of the contents in the /home/KEGAVICIO directory:
+  KEGAVICIO@localhost:~$ ls -l                                            
+  total 32                                                                        
+  drwxr-xr-x 2 sysadmin sysadmin 4096 Dec 10 21:33 Desktop
+  drwxr-xr-x 4 sysadmin sysadmin 4096 Dec 10 21:33 Documents
+  drwxr-xr-x 2 sysadmin sysadmin 4096 Dec 10 21:33 Downloads
+  drwxr-xr-x 2 sysadmin sysadmin 4096 Dec 10 21:33 Music
+  drwxr-xr-x 2 sysadmin sysadmin 4096 Dec 10 21:33 Pictures
+  drwxr-xr-x 2 sysadmin sysadmin 4096 Dec 10 21:33 Public
+  drwxr-xr-x 2 sysadmin sysadmin 4096 Dec 10 21:33 Templates
+  drwxr-xr-x 2 sysadmin sysadmin 4096 Dec 10 21:33 Videos
+
+Recursive Listing
+To perform a recursive listing, use the -R option to the ls command:
+  KEGAVICIO@localhost:~$ ls -R /etc/ppp
+  /etc/ppp:
+  ip-down.d  ip-up.d         
+
+  /etc/ppp/ip-down.d:
+  bind9
+
+  /etc/ppp/ip-up.d:
+  bind9
+
+*******************************************************************************************************************************************
+
+Human-Readable Sizes (h)
+
+  KEGAVICIO@localhost:~$ ls -l /var/log/lastlog                                    
+  -rw-rw-r-- 1 root utmp 292584 Dec 15 16:38 /var/log/lastlog
+
+Important: The -h option must be used with the -l option.
+
+  KEGAVICIO@localhost:~$ ls -lh /var/log/lastlog                                   
+  -rw-rw-r-- 1 root utmp 286K Dec 15 16:38 /var/log/lastlog
+
+*******************************************************************************************************************************************
+
+CP
+
+The cp command is used to copy files. It requires a source and a destination. The structure of the command is as follows:
+  cp source destination
+
+Example:
+  KEGAVICIO@localhost:~$ cp /etc/hosts ~                                     
+  KEGAVICIO@localhost:~$ ls
+  Desktop    Downloads  Pictures  Templates  hosts                          
+  Documents  Music      Public    Videos    
+
+To copy directorys
+  cp -r source_directory destination_directory
+
+*******************************************************************************************************************************************
+
+Verbose Mode
+
+The -v option causes the cp command to produce output if successful. The -v option stands for verbose:
+
+Example:
+  KEGAVICIO@localhost:~$ cp -v /etc/hosts ~                              
+  `/etc/hosts' -> `/home/sysadmin/hosts'
+
+*******************************************************************************************************************************************
+
+Avoid Overwriting Data
+
+The cp command can be destructive to existing data if the destination file already exists. In the case where the destination file exists, the cp command overwrites the existing file's contents with the contents of the source file.
+
+To illustrate this potential problem, first a new file is created in the home directory by copying an existing file:
+
+  KEGAVICIO@localhost:~$ cp /etc/hostname example.txt
+  KEGAVICIO@localhost:~$ cat example.txt                                           
+  localhost  
+
+*******************************************************************************************************************************************
+
+MV 
+
+To move a file, use the mv command. The syntax for the mv command is much like the cp command:
+  mv source destination_directory 
+  KEGAVICIO@@localhost:~$ mv hosts Videos
+
+When a file is moved, the file is removed from the original location and placed in a new location.
+Moving files can be somewhat tricky in Linux because users need specific permissions to remove files from a directory.
+
+*******************************************************************************************************************************************
+
+Renaming Files
+
+The 'mv' command is not just used to move a file, but also to rename a file. If the destination for the 'mv' command is a directory, the file is moved to the directory specified. The name of the file only changes if a destination file name is also specified.
+
+  KEGAVICIO@localhost:~$ mv newexample.txt myfile.txt
+
+*******************************************************************************************************************************************
+
+Touch 
+
+There are several ways of creating a new file, including using a program designed to edit a file (a text editor).
+  "touch #archivo#" if the file isnt in the directory, this command create a new file with the name that you write
+
+Example:
+  KEGAVICIO@localhost:~$ touch sample
+  KEGAVICIO@localhost:~$ ls -l sample                                     
+  -rw-rw-r-- 1 sysadmin sysadmin 0 Nov  9 16:48 sample
+
+*******************************************************************************************************************************************
+
+Rm
+
+To delete a file, use the 'rm' command
+*Warning*
+
+The files are permanently deleted. There is no command to undelete a file and no trash can from which to recover deleted files.
+
+Example:
+  KEGAVICIO@localhost:~$ rm sample
+  KEGAVICIO@localhost:~$ ls
+  Desktop  Documents  Downloads  Music  Pictures  Public  Templates  Videos 
+
+As a precaution, users should use the -i option when deleting multiple files:
+  KEGAVICIO@localhost:~$ rm -i *.txt                                     
+  rm: remove regular empty file `example.txt'? y(yes)                         
+  rm: remove regular empty file `sample.txt'? n(no)                          
+  rm: remove regular empty file `test.txt'? y
+
+To delete a directory with the rm command, use the -r recursive option:
+  KEGAVICIO@localhost:~$ rm -r Videos                                     
+  KEGAVICIO@localhost:~$ ls                                               
+  Desktop  Documents  Downloads  Music  Pictures  Public  Templates  sample.txt
+
+You can also delete a directory with the 'rmdir' command, but only if the directory is empty.
+
+*******************************************************************************************************************************************
+
+Mkdir
+
+To create a directory, use the 'mkdir' command:
+  KEGAVICIO@localhost:~$ mkdir test                                       
+  KEGAVICIO@localhost:~$ ls                                               
+  Desktop    Downloads  Pictures  Templates   test                       
+  Documents  Music      Public    sample.txt
+
+******************************************************************************************************************************************
+
+Compressing Files
+
+Linux provides several tools to compress files; the most common is gzip. Here we show a file before and after compression:
+  KEGAVICIO@localhost:~/Documents$ gzip longfile.txt
+  KEGAVICIO@localhost:~/Documents$ ls -l longfile*
+  -rw-r--r-- 1 sysadmin sysadmin 341 Dec 20  2017 longfile.txt.gz
+
+The gzip command will provide this information, by using the –l option, as shown here:
+
+  KEGAVICIO@localhost:~/Documents$ gzip -l longfile.txt.gz
+  compressed        uncompressed  ratio uncompressed_name
+  341               66540  99.5% longfile.txt
+
+******************************************************************************************************************************************
+
+Decompression Files
+
+Compressed files can be restored to their original form using either the gunzip command or the gzip –d command.
+  KEGAVICIO@localhost:~/Documents$ gunzip longfile.txt.gz
+
+******************************************************************************************************************************************
+
+Archiving Files 
+
+The tar command has three modes that are helpful to become familiar with:
+
+  Create: Make a new archive out of a series of files.
+  Extract: Pull one or more files out of an archive.
+  List: Show the contents of the archive without extracting.
+
+******************************************************************************************************************************************
+
+Create Mode 
+
+  tar -c [-f ARCHIVE] [OPTIONS] [FILE...]
+Creating an archive with the tar command requires two named options:
+  Option	Function
+  -c	    Create an archive.  
+  -f      ARCHIVE	
+          Use archive file.
+
+The argument ARCHIVE will be the name of the resulting archive file.
+
+Tarballs can be compressed for easier transport, either by using gzip on the archive or by having tar do it with the -z option.
+  Option	Function
+  -z	    Compress (or decompress) an archive using the gzip command.
+
+  KEGAVICIO@localhost:~/Documents$ tar -czf alpha_files.tar.gz alpha*
+  KEGAVICIO@localhost:~/Documents$ ls -l alpha_files.tar.gz
+  -rw-rw-r-- 1 sysadmin sysadmin 417 Oct 31 17:15 alpha_files.tar.gz
+
+******************************************************************************************************************************************
+
+List Mode 
+
+  tar -t [-f ARCHIVE] [OPTIONS]
+Given a tar archive, compressed or not, you can see what’s in it by using the -t option. The next example uses three options:
+  KEGAVICIO@localhost:~/Documents/XD$ tar -tf alpha_files.tar                      
+  alpha-first.txt                                                                 
+  alpha-second.txt                                                                
+  alpha-third.txt                                                                 
+  alpha.txt
+
+******************************************************************************************************************************************
+
+Extract Mode
+
+  tar -x [-f ARCHIVE] [OPTIONS]
+
+  KEGAVICIO@localhost:~/Documents/XD$ tar -xf alpha_files.tar                      
+  KEGAVICIO@localhost:~/Documents/XD$ ls                                           
+  alpha-first.txt  alpha-second.txt  alpha-third.txt  alpha.txt  alpha_files.tar
+
+Add the –v flag and you will get a verbose output of the files processed, making it easier to keep track of what's happening:
+
+  KEGAVICIO@localhost:~/Documents/XD$ tar -xvf alpha_files.tar                     
+  alpha-first.txt                                                                 
+  alpha-second.txt                                                                
+  alpha-third.txt                                                                 
+  alpha.txt 
+
+It is important to keep the –f flag at the end, as tar assumes whatever follows this option is a file name.
+
+******************************************************************************************************************************************
+
+ZIP Files 
+
+The de facto archiving utility in Microsoft is the ZIP file. ZIP is not as prevalent in Linux but is well supported by the zip and unzip commands.
+
+  zip [OPTIONS] [zipfile [file…]]
+
+  KEGAVICIO@localhost:~/Documents$ zip alpha_files.zip alpha*
+  adding: alpha-first.txt (deflated 32%)
+  adding: alpha-second.txt (deflated 36%)
+  adding: alpha-third.txt (deflated 48%)
+  adding: alpha.txt (deflated 53%)
+
+The –l list option of the unzip command lists files in .zip archives:
+  
+  KEGAVICIO@localhost:~/Documents/Zips$ unzip -l alpha_files.zip                   
+  Archive:  alpha_files.zip                                                       
+    Length      Date    Time    Name                                              
+  ---------  ---------- -----   ----                                              
+         90  2021-02-08 15:08   alpha-first.txt                                   
+        106  2021-02-08 15:08   alpha-second.txt                                  
+        195  2021-02-08 15:08   alpha-third.txt                                   
+        390  2021-02-08 15:08   alpha.txt                                         
+  ---------                     -------                                           
+        781                     4 files
+
+Here, we extract all the files in the archive to the current directory. Just like tar, you can pass filenames on the command line. The examples below show three different attempts to extract a file.
+
+  KEGAVICIO@localhost:~/Documents/tmp$ unzip School.zip School/Math/numbers.txt
+  Archive:  School.zip
+   extracting: School/Math/numbers.txt
+
+Which extracts the four files matching the pattern, just like tar.
+
+  KEGAVICIO@localhost:~/Documents/tmp$ unzip School.zip School/Art/*t
+  Archive:  School.zip
+    inflating: School/Art/linux.txt
+    inflating: School/Art/red.txt
+    inflating: School/Art/hidden.txt
+    inflating: School/Art/animals.txt
+
+******************************************************************************************************************************************
+
+Cat
+
+The cat command, short for concatenate, is a simple but useful command whose functions include creating and displaying text files, as well as combining copies of text files.
+
+  KEGAVICIO@localhost:~/Documents$ cat food.txt 
+  Food is good.
+
+To create a new file you can use "cat >" 
+  KEGAVICIO@localhost:~$ cat > Comandos.txt
+  Then you can write in the file 
+
+To add more information in a file you can use "cat>>" 
+  KEGAVICIO@localhost:~$ cat >> Comandos.txt 
+
+******************************************************************************************************************************************
+
+Head and Tail
+
+The head and tail commands are used to display only the first few or last few lines of a file, respectively (or, when used with a pipe, the output of a previous command).
+
+  KEGAVICIO@localhost:~$ head /etc/sysctl.conf
+  KEGAVICIO@localhost:~$ tail /etc/sysctl.conf
+
+Passing a number as an option will cause both the head and tail commands to output the specified number of lines, instead of the standard ten. For example to display the last five lines of the /etc/sysctl.conf file use the -5 option:
+
+  KEGAVICIO@localhost:~$ tail -5 /etc/sysctl.conf
+  # Protects against creating or following links under certain conditions
+  # Debian kernels have both set to 1 (restricted)
+  # See https://www.kernel.org/doc/Documentation/sysctl/fs.txt
+  #fs.protected_hardlinks=0
+  #fs.protected_symlinks=0
+
+The -n option can also be used to indicate how many lines to output. Pass a number as an argument to the option:
+
+  KEGAVICIO@localhost:~$ head -n 3 /etc/sysctl.conf
+  #
+  # /etc/sysctl.conf - Configuration file for setting system variables
+  # See /etc/sysctl.d/ for additional system variables
+
+Negative Value Option
+Traditionally in UNIX, the number of lines to output would be specified as an option with either command, so -3 meant to show three lines. For the tail command, either -3 or -n -3 still means show three lines.
+
+However, the GNU version of the head command recognizes -n -3 as show all but the last three lines, and yet the head command still recognizes the option -3 as show the first three lines.
+
+******************************************************************************************************************************************
+
+NL 
+
+Number lines of files, you can call with 'nl'
+Example:
+  KEGAVICIO@localhost:~/Documents$ cat alpha-first.txt  | nl                       
+     1  A is for Animal                                                         
+     2  B is for Bear                                                           
+     3  C is for Cat                                                            
+     4  D is for Dog                                                            
+     5  E is for Elephant                                                       
+     6  F is for Flower
+
+You can use with others commands
+
+******************************************************************************************************************************************
+
+TR 
+
+To understand this, consider a new command called tr. This command takes a set of characters and translates them into another set of characters.
+
+For example, to capitalize a line of text use the tr command as follows:
+
+  KEGAVICIO@localhost:~$ tr 'a-z' 'A-Z'
+  watch how this works
+  WATCH HOW THIS WORKS
+
+Example 2:
+  KEGAVICIO@localhost:~$ tr 'a-z' 'A-Z' < example.txt > newexample.txt
+  KEGAVICIO@localhost:~$ cat newexample.txt
+  /ETC/PPP:
+  IP-DOWN.D
+  IP-UP.D
+
+******************************************************************************************************************************************
+
+Sorting Files or Input
+
+  KEGAVICIO@localhost:~$ head -5 /etc/passwd > mypasswd
+  KEGAVICIO@localhost:~$ cat mypasswd
+  root:x:0:0:root:/root:/bin/bash
+  daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+  bin:x:2:2:bin:/bin:/usr/sbin/nologin
+  sys:x:3:3:sys:/dev:/usr/sbin/nologin
+  sync:x:4:65534:sync:/bin:/bin/sync
+
+******************************************************************************************************************************************
+
+WC
+ 
+You can see how many lines, words or caracters have the file
+WC -l son las lineas, WC -w son las palabras, WC -c los caracteres
+
+Example:
+  KEGAVICIO@localhost:~$ wc /etc/passwd /etc/passwd-
+  35   56 1710 /etc/passwd
+  34   55 1665 /etc/passwd-
+  69  111 3375 total
+
+******************************************************************************************************************************************
+
+Filter File Contents
+
+The grep command can be used to filter lines in a file or the output of another command that matches a specified pattern.
+
+Example:
+  KEGAVICIO@localhost:~$ grep bash /etc/passwd
+  root:x:0:0:root:/root:/bin/bash
+  sysadmin:x:1001:1001:System Administrator,,,,:/home/sysadmin:/bin/bash
+
+The -c option provides a count of how many lines match:
+
+  KEGAVICIO@localhost:~$ grep -c bash /etc/passwd
+  2
+
+The -n option to the grep command will display original line numbers. To display all lines and their line numbers in the /etc/passwd file which contain the pattern bash:
+
+  KEGAVICIO@localhost:~$ grep -n bash /etc/passwd                          
+  1:root:x:0:0:root:/root:/bin/bash                                       
+  27:sysadmin:x:1001:1001:System Administrator,,,,:/home/sysadmin:/bin/bash
+
+The -v option inverts the match, outputting all lines that do not contain the pattern. To display all lines not containing nologin in the /etc/passwd file:
+
+  KEGAVICIO@localhost:~$ grep -v nologin /etc/passwd
+  root:x:0:0:root:/root:/bin/bash
+  sync:x:4:65534:sync:/bin:/bin/sync
+  operator:x:1000:37::/root:/bin/sh
+  sysadmin:x:1001:1001:System Administrator,,,,:/home/sysadmin:/bin/bash
+
+The -i option ignores the case (capitalization) distinctions. The following searches for the pattern the in newhome.txt, allowing each character to be uppercase or lowercase:
+
+  KEGAVICIO@localhost:~$ cd Documents
+  KEGAVICIO@localhost:~/Documents$ grep -i the newhome.txt
+  There are three bathrooms.
+  **Beware** of the ghost in the bedroom.
+  The kitchen is open for entertaining.
+  **Caution** the spirits don't like guests.
+
+The -w option only returns lines which contain matches that form whole words.
+
+  KEGAVICIO@localhost:~/Documents$ grep are newhome.txt
+  There are three bathrooms.
+  **Beware** of the ghost in the bedroom.
+  KEGAVICIO@localhost:~/Documents$ grep -w are newhome.txt
+  There are three bathrooms.
+
+******************************************************************************************************************************************
+
+Basic Regular Expressions
+
+Regular expressions, also referred to as regex, are a collection of normal and special characters that are used to find simple or complex patterns, respectively, in files. These characters are characters that are used to perform a particular matching function in a search.
+
+Character	  Matches
+.	          Any single character
+==========================================================================================================================================
+[ ]         A list or range of characters to match one character
+            If the first character within the brackets is the caret ^, it means any character not in the list
+==========================================================================================================================================
+*	          The previous character repeated zero or more times
+==========================================================================================================================================
+^	          If the first character in the pattern, the pattern must be at the beginning of the line to match, otherwise just a literal ^ character
+==========================================================================================================================================
+$	          If the last character in the pattern, the pattern must be at the end of the line to match, otherwise just a literal $ character
+
+******************************************************************************************************************************************
+
+Shell Scripts in a Nutshell
+
+A shell script is a file of executable commands that has been stored in a text file. When the file is run, each command is executed. Shell scripts have access to all the commands of the shell, including logic.
+
+  echo "Hello, World!"
+
+This command have many uses
+"echo #text#" show the text in the terminal
+  KEGAVICIO@localhost:~$ echo "Hello, World!"
+  Hello, World
+
+"echo #texto# >> #archivo#" append the text in a file like the command cat 
+"echo #texto# > #archivo#" write a new file with the text that you put 
+
+
+To write a example script you need a file .sh that is a bash
+
+  #!/bin/sh                       or  #!/bin/bash
+  echo "Hello, World!"                echo "Hello, World!"
+
+To execute this file you can use 
+  KEGAVICIO@localhost:~$ sh test.sh
+  Hello, World!
+
+or you can use 
+  KEGAVICIO@localhost:~$ chmod +x ./test.sh
+  KEGAVICIO@localhost:~$ ./test.sh
+  Hello, World!
+
+******************************************************************************************************************************************
+
+Editing Shell Scripts Or Files 
+
+UNIX has many text editors. The merits of one over the other are often hotly debated. Two are specifically mentioned in the LPI Essentials syllabus: The GNU nano editor is a very simple editor well suited to editing small text files. The Visual Editor, vi, or its newer version, VI improved (vim), is a remarkably powerful editor but has a steep learning curve. We’ll focus on nano.
+
+I like more vim, you can found moods for this in the internet it most beautiful or you can make one 
+
+******************************************************************************************************************************************
+
+Variables In Scripts
+
+Variables are a key part of any programming language. A very simple use of variables is shown here:
+  #!/bin/bash
+
+  ANIMAL="penguin"
+  echo "My favorite animal is a $ANIMAL"
+
+It is important that there are no spaces between the name of the variable, the equals sign, and the item to be assigned to the variable. If you have a space there, you will get an odd error such as “command not found”. Capitalizing the name of the variable is not necessary but it is a useful convention to separate variables from commands to be executed.
+
+Another way to assign to a variable is to use the output of another command as the contents of the variable by enclosing the command in back ticks:
+
+  #!/bin/bash
+  CURRENT_DIRECTORY=`pwd`
+  echo "You are in $CURRENT_DIRECTORY"
+
+It is possible to get input from the user of your script and assign it to a variable through the read command:
+
+  #!/bin/bash
+
+  echo -n "What is your name? "
+  read NAME
+  echo "Hello $NAME!"
+
+There are some special variables in addition to the ones you set. You can pass arguments to your script:
+
+  #!/bin/bash
+  echo "Hello $1"
+
+A dollar $ sign followed by a number N corresponds to the Nth argument passed to the script. If you call the example above with ./test.sh World the output will be Hello World. The $0 variable contains the name of the script itself.
+
+Likewise you can set the exit code of your own script with the exit command:
+
+  #!/bin/bash
+  # Something bad happened!
+  exit 1
+
+The example above shows a comment #. Anything after the hash mark is ignored, which can be used to help the programmer leave notes. The exit 1 returns exit code 1 to the caller. This even works in the shell, if you run this script from the command line and then type echo $? you will see it returns 1.
+
+By convention, an exit code of 0 means “everything is OK”. Any exit codes greater than 0 mean some kind of error happened, which is specific to the program. Above you saw that grep uses 1 to mean the string was not found.
+
+******************************************************************************************************************************************
+
+Conditionals
+
+A basic if statement looks like this:
+
+  if somecommand; then
+    # do this if somecommand has an exit code of 0
+  fi
+
+Using what you know about grep, you can now write a script that does different things based on the presence of a string in the password file:
+
+  #!/bin/bash
+
+  if grep -q root /etc/passwd; then
+    echo root is in the password file
+  else
+    echo root is missing from the password file
+  fi
+
+Using test (you can found the command after)
+If you enclose your conditions in square brackets, it’s the same as running test. So, these statements are identical.
+
+  if test –f /tmp/foo; then
+  if [ -f /tmp/foo]; then
+
+The if statement has a final form that lets you do multiple comparisons at one time using elif (short for else if).
+
+  #!/bin/bash
+  
+  if [ "$1" = "hello" ]; then
+    echo "hello yourself"
+  elif [ "$1" = "goodbye" ]; then
+    echo "nice to have met you"
+    echo "I hope to see you again"
+  else
+    echo "I didn't understand that"
+  fi
+
+The if/elif/else tests can become quite verbose and complicated. The case statement provides a different way of making multiple tests easier.
+
+  #!/bin/bash
+  
+  case "$1" in
+  hello|hi)
+    echo "hello yourself"
+    ;;
+  goodbye)
+    echo "nice to have met you"
+    echo "I hope to see you again"
+    ;;
+  *)
+    echo "I didn't understand that"
+  esac
+
+
+******************************************************************************************************************************************
+
+The test command gives you easy access to comparison and file test operators. For example:
+
+Command	                          Description
+test –f /dev/ttyS0	              0 if the file exists
+test ! –f /dev/ttyS0	            0 if the file doesn’t exist
+test –d /tmp	                    0 if the directory exists
+test –x `which ls`	              substitute the location of ls then test if the user can execute
+test 1 –eq 1	                    0 if numeric comparison succeeds
+test ! 1 –eq 1	                  NOT – 0 if the comparison fails
+test 1 –ne 1	                    Easier, test for numeric inequality
+test “a” = “a”	                  0 if the string comparison succeeds
+test “a” != “a”	                  0 if the strings are different
+test 1 –eq 1 –o 2 –eq 2	          -o is OR: either can be the same
+test 1 –eq 1 –a 2 –eq 2	          -a is AND: both must be the same
+
+******************************************************************************************************************************************
+
+Loops
+
+for loops are used when you have a finite collection over which you want to iterate, such as a list of files, or a list of server names:
+
+  #!/bin/bash
+
+  SERVERS="servera serverb serverc"
+  for S in $SERVERS; do
+    echo "Doing something to $S"
+  done
+
+This example shows two more ways to pass a list.
+
+  #!/bin/bash
+
+  for NAME in Sean Jon Isaac David; do
+    echo "Hello $NAME"
+  done
+
+  for S in *; do
+    echo "Doing something to $S"
+  done
+
+The first loop is functionally the same as the previous example, except that the list is passed to the for loop directly instead of using a variable. Using a variable helps the clarity of the script as someone can easily make changes to the variable rather than looking at a loop.
+
+The second loop uses a * which is a file glob. This gets expanded by the shell to all the files in the current directory.
+
+The other type of loop, a while loop, operates on a list of unknown size. Its job is to keep running and on each iteration perform a test to see if it should run another time. You can think of it as “while some condition is true, do stuff.”
+
+  #!/bin/bash
+
+  i=0
+  while [ $i -lt 10 ]; do
+    echo $i
+    i=$(( $i + 1))
+  done
+  echo “Done counting”
+
+The example above shows a while loop that counts from 0 to 9. A counter variable, i, is initialized to 0. Then a while loop is run with the test being “is $i less than 10?” Note that the while loop uses the same notation as an if statement!
+
+******************************************************************************************************************************************
+
+Process 
+
+You can see a snapshot for what processes you run with the command 'ps'
+
+  KEGAVICIO@localhost:~$ ps
+   PID TTY          TIME CMD
+  6054 ?        00:00:00 bash
+  6070 ?        00:00:01 xeyes
+  6090 ?        00:00:01 firefox
+  6146 ?        00:00:00 ps
+
+If you run ps with the option --forest, then, similar to the pstree command, it shows lines indicating the parent and child relationship:
+
+  KEGAVICIO@localhost:~$ ps --forest
+   PID TTY          TIME CMD
+  6054 ?        00:00:00 bash
+  6090 ?        00:00:02   \_ firefox
+  6180 ?        00:00:00   \_ dash
+  6181 ?        00:00:00        \_ xeyes
+  6188 ?        00:00:00        \_ ps
+  
+More information in the file Data_Stored.txt
+
+******************************************************************************************************************************************
+
+Command "|"
+  This can help to use two or more commands in one line 
+  Example 
+  ps -fe | greep firefox
+
+  KEGAVICIO@localhost:~$ ps -ef | grep firefox
+  6090 pts/0    00:00:07 firefox
+
+******************************************************************************************************************************************
+
+KILL
+  
+This command help if you dont like some process, only need the PID or ID and only execute the command 
+  KEGAVICIO@localhost:~$ kill -9 6090
+
+  the number 9 is immediate kill 
+
+

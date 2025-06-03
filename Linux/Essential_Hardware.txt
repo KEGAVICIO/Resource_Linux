@@ -1,0 +1,185 @@
+                ---------------------------------------------------------------------
+
+                **  **  ******  ******  ******   **   **   **  ******  ******  ******
+                **  **  **  **  **  **  ******   **   **   **  **  **  **  **  **
+                ******  **  **  **  **  **  ***  **   **   **  **  **  **  **  ******
+                ******  ******  *****   **  ***   ** **** **   ******  *****   ******
+                **  **  **  **  **  **  ******     ***  ***    **  **  **  **  **
+                **  **  **  **  **  **  ******      *    *     **  **  **  **  ******
+
+                ---------------------------------------------------------------------
+
+===========================================================================================================================================
+
+1- Motherboards
+  
+  The motherboard, or system board, is the main hardware board in the computer through which the central processing unit (CPU), random-access memory (RAM) and other components are all connected. Depending on the computer type (laptop, desktop, server) some devices, such as processors and RAM, are attached directly to the motherboard, while other devices, such as add-on cards, are connected via a bus.
+
+===========================================================================================================================================
+
+2- Processors 
+
+  The processor is the brain of the computer, where the execution of code takes place and where most calculations are done.
+  
+  If a hardware system has more than one processor, the system is referred to as a multiprocessor. If more than one processor is combined into a single overall processor chip, then it is called multi-core.
+
+  Although support is available for more types of processors in Linux than any other operating system, there are primarily just two types of processors used on desktop and server computers: x86 and x86_64. On an x86 system, the system processes data 32 bits at a time; on an x86_64 the system processes data 64 bits at a time.
+
+  To see which family the CPU of the current system belongs to, use the arch command:
+    KEGAVICIO@localhost:~$ arch
+    x86_64
+
+  For more information concerning the CPU, use the lscpu command:
+
+  KEGAVICIO@localhost:~$ lscpu
+  Architecture:          x86_64
+  CPU op-mode(s):        32-bit, 64-bit
+  Byte Order:            Little Endian
+  CPU(s):                4
+  On-line CPU(s) list:   0-3                                                    
+  Thread(s) per core:    1                                                      
+  Core(s) per socket:    4                                                      
+  Socket(s):             1
+  NUMA node(s):          1                                                      
+  Vendor ID:             GenuineIntel
+
+===========================================================================================================================================
+
+3- Random Access Memory 
+  The motherboard typically has slots where random-access memory (RAM) can be connected to the system. The 32-bit architecture systems can use up to 4 gigabytes (GB) of RAM, while 64-bit architectures are capable of addressing and using far more RAM.
+
+  To view the amount of RAM in your system, including the swap space, execute the free command. The free command has a -m option to force the output to be rounded to the nearest megabyte (MB) and a -g option to force the output to be rounded to the nearest gigabyte (GB):
+
+  KEGAVICIO@localhost:~$ free -m                                                
+             total       used       free     shared    buffers     cached     
+  Mem:          1894        356       1537          0          25       177     
+  -/+ buffers/cache:        153       1741                                      
+  Swap:         4063          0       4063
+
+===========================================================================================================================================
+
+4- Buses
+  A bus is a high-speed connection that allows communication between computers or the components inside a computer. The motherboard has buses that allow for multiple devices to connect to the system, including the Peripheral Component Interconnect (PCI) and Universal Serial Bus (USB). The motherboard also has connectors for monitors, keyboards and mice.
+
+  Different system types will use a bus differently to connect components. In a desktop or server computer, there is a motherboard with the processor, RAM, and other components directly attached, and then a high-speed bus that allows additional components to be attached via card slots, such as video, network and other peripheral devices.
+
+===========================================================================================================================================
+
+5- Peripheral Devices 
+  Peripheral devices are components connected to a computer that allow input, output or data storage. Keyboards, mice, monitors, printers and hard disks are all considered peripherals and are accessed by the system in order to perform functions outside of central processing. To view all of the devices connected by the PCI bus, the user can execute the lspci command. 
+
+  KEGAVICIO@localhost:~$ lspci                                                   
+  00:00.0 Host bridge: Intel Corporation 440BX/ZX/DX - 82443BX/ZX/DX Host bridge (rev 01)                                              
+  00:01.0 PCI bridge: Intel Corporation 440BX/ZX/DX - 82443BX/ZX/DX AGP bridge (rev 01)                   
+  00:07.0 ISA bridge: Intel Corporation 82371AB/EB/MB PIIX4 ISA (rev 08)        
+  00:07.1 IDE interface: Intel Corporation 82371AB/EB/MB PIIX4 IDE (rev 01)     
+  00:07.3 Bridge: Intel Corporation 82371AB/EB/MB PIIX4 ACPI (rev 08)           
+  00:07.7 System peripheral: VMware Virtual Machine Communication Interface (rev 10)                                                        
+  00:0f.0 VGA compatible controller: VMware SVGA II Adapter     
+  03:00.0 Serial Attached SCSI controller: VMware PVSCSI SCSI Controller (rev 02
+  0b:00.0 Ethernet controller: VMware VMXNET3 Ethernet Controller (rev 01)
+
+===========================================================================================================================================
+
+6- Universal Serial Bus Devices 
+  While the PCI bus is used for many internal devices such as sound and network cards, an ever-increasing number of external devices (or peripherals) are connected to the computer via USB.
+
+  Devices connected internally are usually cold-plug, meaning the system must be shut down in order to connect or disconnect a device. USB devices are hot-plug, meaning they can be connected or disconnected while the system is running.
+
+  To display the devices connected to the system via USB, execute the lsusb command:
+
+  KEGAVICIO@localhost:~$ lsusb
+  Bus 001 Device 002: ID 0e0f:000b VMware, Inc. 
+  Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+  Bus 002 Device 004: ID 0e0f:0008 VMware, Inc. 
+  Bus 002 Device 003: ID 0e0f:0002 VMware, Inc. Virtual USB Hub
+  Bus 002 Device 002: ID 0e0f:0003 VMware, Inc. Virtual Mouse
+  Bus 002 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+
+===========================================================================================================================================
+
+7- Hard Drives
+  Hard drives, also called hard disks, disk devices, or storage devices, may be attached to the system in a number of ways; the controller may be integrated into the motherboard, on a PCI card, or as a USB device. For the purposes of most Linux systems, a hard drive can generally be defined as any electromechanical or electronic storage device that holds data to be accessed by the system.
+
+  Hard drives are divided into one or more partitions. A partition is a logical division of a hard drive, designed to take a large amount of available storage space and break it up into smaller areas. While it is common on Microsoft Windows to have a single partition for each hard drive, on Linux distributions, multiple partitions per hard drive is common.
+
+  An old term used to describe an internal hard disk is fixed disk, as the disk is fixed (not removable). This term gave rise to several command names: the fdisk, cfdisk and sfdisk commands, which are tools for working with the MBR partitioned disks.
+
+  The GPT disks use a newer type of partitioning, which allows the user to divide the disk into more partitions than what MBR supports. GPT also allows having partitions which can be larger than two terabytes (MBR does not). The tools for managing GPT disks are named similarly to their fdisk counterparts: gdisk, cgdisk, and sgdisk.
+
+  There is also a family of tools that attempt to support both MBR and GPT type disks. This set of tools includes the parted command and the graphical gparted tool.
+
+  Hard drives are associated with file names (called device files) that are stored in the /dev directory. Each device file name is made up of multiple parts.
+
+      - File Type
+
+      The file name is prefixed based on the different types of hard drives. IDE (Intelligent Drive Electronics) hard drives begin with hd, while USB, SATA (Serial Advanced Technology Attachment) and SCSI (Small Computer System Interface) hard drives begin with sd.
+
+    - Device Order
+
+      Each hard drive is then assigned a letter which follows the prefix. For example, the first IDE hard drive would be named /dev/hda and the second would be /dev/hdb, and so on.
+
+    - Partition
+
+      Finally, each partition on a disk is given a unique numeric indicator. For example, if a USB hard drive has two partitions, they could be associated with the /dev/sda1 and /dev/sda2 device files.
+
+  Example: 
+    KEGAVICIO@localhost:~$ ls /dev/sd*
+    /dev/sda /dev/sda1  /dev/sda2  /dev/sdb  /dev/sdb1  /dev/sdc
+
+  The fdisk command can be used to display further information about the partitions:
+
+  KEGAVICIO@localhost:~$ fdisk -l /dev/sda                                             
+  Disk /dev/sda: 21.5 GB, 21474836480 bytes                                       
+  255 heads, 63 sectors/track, 2610 cylinders, total 41943040 sectors             
+  Units = sectors of 1 * 512 = 512 bytes                                          
+  Sector size (logical/physical): 512 bytes / 512 bytes                           
+  I/O size (minimum/optimal): 512 bytes / 512 bytes                               
+  Disk identifier: 0x000571a2                                                     
+                                                                                
+     Device Boot      Start         End      Blocks   Id  System                  
+  /dev/sda1   *        2048    39845887    19921920   83  Linux                   
+  /dev/sda2        39847934    41940991     1046529    5  Extended                
+  /dev/sda5        39847936    41940991     1046528   82  Linux swap / Solaris
+
+===========================================================================================================================================
+
+8- Solid State Disks 
+  While the phrase hard disk is typically considered to encompass traditional spinning disk devices, it can also refer to the newer and very different solid state drives or disks.
+
+  Consider the difference between a traditional spinning platter hard disk and a USB thumb drive. The former literally has spinning disk platters in it that are read by drive heads, and the spinning disks are laid out to take advantage of the spinning nature of the device. Data is written (and read) in long strings of sequential blocks that a drive head encounters as the platter spins around.
+
+  Advantages of a solid state disk include lower power usage, time savings in system booting, faster program loads, and less heat and vibration from no moving parts. Disadvantages include higher costs in comparison to spinning hard disks, lower capacity due to the higher cost, and if soldered directly on the motherboard/mainboard, no ability to upgrade by swapping out the drive.
+
+===========================================================================================================================================
+
+9- Optical Drives 
+  Optical drives, often referred to as CD-ROMs, DVDs, or Blu-Ray, are removable storage media. While some devices used with optical disks are read-only, others are capable of burning (writing to) disks, when using a writable type of disk. There are various standards for writable and rewritable disks, such as CD-R, CD+R, DVD+RW, and DVD-RW.
+
+  Upon mounting, most GUI interfaces prompt the user to take some action, such as open the contents of the disk in a file browser or start a media program. When the user is finished using the disk, it is necessary to unmount it using a menu or the umount command.
+
+===========================================================================================================================================
+
+10- Managing Devices 
+  In order to be successful in enabling devices in Linux, it is best to check the Linux distribution to see if the device is certified to work with that distribution. Commercial distributions like Red Hat and SUSE have web pages dedicated to listing hardware that is certified or approved to work with their software.
+
+  Additional tips on being successful with connecting your devices: avoid brand new or highly-specialized devices and check with the vendor of the device to see if they support Linux before making a purchase.
+
+===========================================================================================================================================
+
+11- Video Display Devices
+
+  In order to display output to the monitor, the computer system must have a video display device (video card) and a monitor. Video display devices are often directly built into or attached to the motherboard, although they can also be connected through the PCI bus slots on the motherboard.
+
+  There are three types of video cables commonly used:
+
+  1. the older but still used analog 15-pin Video Graphics Array (VGA) cable
+  2. the more recent 29-pin Digital Visual Interface (DVI) interface
+  3. the very widely-used High-Definition Multimedia Interface (HDMI) which supports resolutions up to the 4K or Ultra HD range, and has either 19 or 29 pins
+  4. the newest digital display interface, the 20-pin DisplayPort (DP). Also its miniaturized counterpart, the Mini DisplayPort, used mainly for Apple products.
+
+===========================================================================================================================================
+
+12- Power Supplies
+  Power supplies are the devices that convert alternating current (120v, 240v) into direct current, which the computer uses at various voltages (3.3v, 5v, 12v). Power supplies are generally not programmable; however, their proper function has a major impact on the rest of the system.
+

@@ -1,0 +1,321 @@
+                -------------------------------------------------------------------
+
+                ******  *****    **   **  ******  **    **  ******  ******  *****
+                **  **  ******   **   **  **  **  ***   **  ******  **      ******
+                **  **  **   **  **   **  **  **  ** *  **  **      ******  **   **
+                ******  **   **   ** **   ******  **  * **  **      ******  **   **
+                **  **  ******     ***    **  **  **   ***  ******  **      ******
+                **  **  *****       *     **  **  **    **  ******  ******  *****
+                
+                -------------------------------------------------------------------
+
+*******************************************************************************************************************************************
+
+What is a command? The simplest answer is that a command is a software program that, when executed on the CLI, performs an action on the computer.
+
+In this you can have arguments and options like: command [options] [arguments]
+  Argument: ls /etc/ppp
+Option: ls -l 
+  You can see tht the options have a "-" before the option, each command has its own options
+
+*******************************************************************************************************************************************
+
+History 
+You can see your history only with the row up
+
+*******************************************************************************************************************************************
+
+Local Variables
+Local or shell variables exist only in the current shell, and cannot affect other commands or applications.
+  variable=value
+
+Example:
+  KEGAVICIO@localhost:~$ variable1='Something'
+  And you call like: 
+    KEGAVICIO@localhost:~$ echo $variable1  
+    Something
+
+*******************************************************************************************************************************************
+
+Environment Variables
+Also called global variables, are available system-wide, in all shells used by Bash when interpreting commands and performing tasks.
+
+Some example are: PATH, HOME, and HISTSIZE
+You can see the parameters like: 
+  KEGAVICIO@localhost:~$ echo $HISTSIZE 
+  1000
+You can modify this like: 
+  KEGAVICIO@localhost:~$ HISTSIZE=500
+  500
+
+If you like to change you local variable you need to use de comand "export %variable%"
+  KEGAVICIO@localhost:~$ export variable1
+
+Then we create a another
+  KEGAVICIO@localhost:~$ export variable2='Else'
+
+Now you can change de value of a environment variable like:
+  variable1='$variable1' '$variable2'
+The output for this:
+  KEGAVICIO@localhost:~$ echo variable1
+  Something Else
+
+Exported variables can be removed using the unset command:
+  KEGAVICIO@localhost:~$ unset variable2
+
+*******************************************************************************************************************************************
+
+Aliases
+An alias can be used to map longer commands to shorter key sequences.
+  KEGAVICIO@localhost:~$ alias                                             
+  alias egrep='egrep --color=auto'                                       
+  alias fgrep='fgrep --color=auto'                                        
+  alias grep='grep --color=auto'                                          
+  alias l='ls -CF'                                                       
+  alias la='ls -A'                                                       
+  alias ll='ls -alF'                                                     
+  alias ls='ls --color=auto'
+
+You can create new Aliases:
+  KEGAVICIO@localhost:~$ alias mycal="cal 2019"
+  KEGAVICIO@localhost:~$ mycal
+                              2019                                                
+        January               February               March                        
+  Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa                
+         1  2  3  4  5                  1  2                  1  2                
+   6  7  8  9 10 11 12   3  4  5  6  7  8  9   3  4  5  6  7  8  9                
+  13 14 15 16 17 18 19  10 11 12 13 14 15 16  10 11 12 13 14 15 16                
+  20 21 22 23 24 25 26  17 18 19 20 21 22 23  17 18 19 20 21 22 23                
+  27 28 29 30 31        24 25 26 27 28        24 25 26 27 28 29 30                
+                                              31
+  
+The command "type" identify aliases to other commands
+
+*******************************************************************************************************************************************
+
+Functions
+Functions can also be built using existing commands to either create new commands, or to override commands built-in to the shell or commands stored in files. Aliases and functions are normally loaded from the initialization files when the shell first starts.
+
+  function_name () 
+  {
+     commands
+  }
+
+You can create a funtion like:
+  KEGAVICIO@localhost:~$ my_report () {                                            
+  > ls Documents                                                                  
+  > date                                                                          
+  > echo "Document directory report"                                              
+  > }
+
+When creating a function, a > character will appear as a prompt to enter the commands for the function. The curly braces {} are used to let the shell know when a function begins and ends so as to exit the > prompt.
+
+Once a function is created, the function name may be invoked from the BASH prompt to execute the function:
+  KEGAVICIO@localhost:~$ my_report
+  School            alpha-third.txt  hidden.txt    numbers.txt  spelling.txt      
+  Work              alpha.txt        letters.txt   os.csv       words             
+  adjectives.txt    animals.txt      linux.txt     people.csv                     
+  alpha-first.txt   food.txt         longfile.txt  profile.txt                    
+  alpha-second.txt  hello.sh         newhome.txt   red.txt                        
+  Wed Oct 13 06:54:04 UTC 2021                                                    
+  Document directory report
+
+*******************************************************************************************************************************************
+
+Quoting
+There are three types of quotes that have special significance to the Bash shell: double quotes ", single quotes ', and back quotes `. Each set of quotes alerts the shell not to treat the text within the quotes in the normal way.
+
+Double Quotes
+Double quotes stop the shell from interpreting some metacharacters (special characters), including glob characters.
+
+Eamples:
+  KEGAVICIO@localhost:~$ echo "The glob characters are *, ? and [ ]"      
+  The glob characters are *, ? and [ ]
+  
+  KEGAVICIO@localhost:~$ echo "The path is $PATH"                          
+  The path is /usr/bin/custom:/home/KEGAVICIO/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games
+
+Single Quotes
+Single quotes prevent the shell from doing any interpreting of special characters, including globs, variables, command substitution and other metacharacters that have not been discussed yet.
+
+Example:
+  KEGAVICIO@localhost:~$ echo The car costs $100                           
+  The car costs 00                                                        
+  KEGAVICIO@localhost:~$ echo 'The car costs $100'                        
+  The car costs $100
+
+Backquotes
+Backquotes, or backticks, are used to specify a command within a command, a process called command substitution. This allows for powerful and sophisticated use of commands.
+
+Example:
+  KEGAVICIO@localhost:~$ echo Today is date                               
+  Today is date
+
+If you like see the date try this
+  KEGAVICIO@localhost:~$ echo Today is `date`                               
+  Today is Mon Nov 4 03:40:04 UTC 2018
+
+*******************************************************************************************************************************************
+
+Backslash character
+There is also an alternative technique to essentially single quote a single character. Consider the following message:
+  The service costs $1 and the path is $PATH
+If this sentence is placed in double quotes, $1 and $PATH are considered variables.
+
+  KEGAVICIO@localhost:~$ echo "The service costs $1 and the path is $PATH"
+  The service costs  and the path is /usr/bin/custom:/home/sysadmin/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games
+
+  KEGAVICIO@localhost:~$ echo 'The service costs $1 and the path is $PATH' 
+  The service costs $1 and the path is $PATH
+
+  But what if you want to have $PATH treated as a variable and $1 
+
+In this case, use a backslash \ character in front of the dollar sign $ character to prevent the shell from interpreting it. The command below demonstrates using the \ character:
+
+  KEGAVICIO@localhost:~$ echo The service costs \$1 and the path is $PATH
+  The service costs $1 and the path is /usr/bin/custom:/home/KEGAVICIO/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games
+
+*******************************************************************************************************************************************
+
+Semicolon
+The semicolon ; character can be used to run multiple commands, one after the other.
+  command1; command2; command3
+
+For example to print the months of January, February, March of 2030
+  KEGAVICIO@localhost:~$ cal 1 2030; cal 2 2030; cal 3 2030               
+    January 2030                                                       
+Su Mo Tu We Th Fr Sa                                                            
+       1  2  3  4  5                                                            
+ 6  7  8  9 10 11 12                                                            
+13 14 15 16 17 18 19                                                            
+20 21 22 23 24 25 26                                                            
+27 28 29 30 31                                                                  
+                                                                                
+   February 2030                                                                
+Su Mo Tu We Th Fr Sa                                                            
+                1  2                                                            
+ 3  4  5  6  7  8  9                                                            
+10 11 12 13 14 15 16                                                            
+17 18 19 20 21 22 23                                                            
+24 25 26 27 28                                                                  
+                                                                                
+     March 2030                                                                 
+Su Mo Tu We Th Fr Sa                                                            
+                1  2                                                            
+ 3  4  5  6  7  8  9                                                            
+10 11 12 13 14 15 16                                                            
+17 18 19 20 21 22 23                                                            
+24 25 26 27 28 29 30                                                            
+31
+
+*******************************************************************************************************************************************
+
+Double Ampersand
+The double ampersand && acts as a logical "and"; if the first command is successful, then the second command will also run. If the first command fails, then the second command will not run.
+  command1 && command2
+
+In the following example, the first command succeeds because the /etc/ppp directory exists and is accessible while the second command fails because there is no /junk directory:
+
+  KEGAVICIO@localhost:~$ ls /etc/ppp                  
+  ip-down.d  ip-up.d           
+  KEGAVICIO@localhost:~$ ls /etc/junk                             
+  ls: cannot access /etc/junk: No such file or directory
+
+Example:
+  KEGAVICIO@localhost:~$ ls /etc/ppp && echo success          
+  ip-down.d  ip-up.d        
+  success  
+
+  KEGAVICIO@localhost:~$ ls /etc/junk && echo success          
+  ls: cannot access /etc/junk: No such file or directory
+
+  In this example dont execute the "echo" because the first is fails
+
+*******************************************************************************************************************************************
+
+Double Pipe
+The double pipe || is a logical "or". Depending on the result of the first command, the second command will either run or be skipped.
+  command1 || command2
+
+Example:
+  KEGAVICIO@localhost:~$ ls /etc/ppp || echo failed                 
+  ip-down.d  ip-up.d 
+
+  KEGAVICIOlocalhost:~$ ls /etc/junk || echo failed                  
+  ls: cannot access /etc/junk: No such file or directory             
+  failed
+
+*******************************************************************************************************************************************
+
+Find Any File or directory
+
+To find any file or directory, use the locate command. 
+  KEGAVICIO@localhost:~$ locate gshadow                                   
+  /etc/gshadow                                                           
+  /etc/gshadow-                                                          
+  /usr/include/gshadow.h                                                
+  /usr/share/man/cs/man5/gshadow.5.gz                                   
+  /usr/share/man/da/man5/gshadow.5.gz                                    
+  /usr/share/man/de/man5/gshadow.5.gz                                    
+  /usr/share/man/fr/man5/gshadow.5.gz                                    
+  /usr/share/man/it/man5/gshadow.5.gz                                    
+  /usr/share/man/man5/gshadow.5.gz                                       
+  /usr/share/man/ru/man5/gshadow.5.gz                                   
+  /usr/share/man/sv/man5/gshadow.5.gz                                    
+  /usr/share/man/zh_CN/man5/gshadow.5.gz  
+
+*******************************************************************************************************************************************
+
+Viewing Info Documentation
+To display the info documentation for a command, use the info command.
+  info command
+
+*******************************************************************************************************************************************
+
+Using the Help Option
+
+Many commands will provide basic information, very similar to the SYNOPSIS found in man pages, by simply using the --help option to the command. This option is useful to learn the basic usage of a command quickly without leaving the command line:
+
+KEGAVICIO@localhost:~$  cat --help  
+
+*******************************************************************************************************************************************
+
+Asterisk * character
+
+The asterisk * character is used to represent zero or more of any character in a filename.
+  KEGAVICIO@localhost:~$ echo /etc/t*                              
+  /etc/terminfo /etc/timezone /etc/tmpfiles.d
+
+*******************************************************************************************************************************************
+
+Question Mark ? Character 
+
+The question mark ? character represents any single character. Each question mark character matches exactly one character, no more and no less.
+  KEGAVICIO@localhost:~$ echo /etc/t???????      
+  /etc/terminfo /etc/timezone
+
+*******************************************************************************************************************************************
+
+Bracket [ ] characters
+
+The bracket [] characters are used to match a single character by representing a range of characters that are possible match characters. 
+For example, the /etc/[gu]* pattern matches any file that begins with either a g or u character and contains zero or more additional characters:
+  KEGAVICIO@localhost:~$ echo /etc/[gu]*                              
+  /etc/gai.conf /etc/groff /etc/group /etc/group- /etc/gshadow /etc/gshadow- /etc/gss /etc/ucf.conf /etc/udev /etc/ufw /etc/update-motd.d /etc/updatedb.conf
+
+Brackets can also be used to a represent a range of characters like [a-d]*.
+The /etc/*[0-9]* pattern displays any file that contains at least one number
+
+*******************************************************************************************************************************************
+
+Exclamation Point ! Character 
+
+The exclamation point ! character is used in conjunction with the square brackets to negate a range.
+  KEGAVICIO@localhost:~$ echo /etc/[!a-t]*
+  /etc/X11 /etc/ucf.conf /etc/udev /etc/ufw /etc/update-motd.d /etc/updatedb.conf 
+  /etc/vim /etc/vtrgb /etc/wgetrc /etc/xdg
+
+*******************************************************************************************************************************************
+
+
+

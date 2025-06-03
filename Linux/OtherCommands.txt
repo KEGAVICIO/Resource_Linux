@@ -1,0 +1,77 @@
+************ More ************
+"more #direccion#" you can see the diferences dats in a file
+
+************ Less ************
+"less #direccion#" its the same like the command more but this you can move 
+
+*********** head *************
+"head #archivo#" you can see the firsts ten lines for a file
+
+**************** TAIL ************************
+"tail #archivo#" you can see the last ten lines in the file   
+"tail -n <number> #archivo#" you can see the n-lines in the file 
+"tail -f #archivo#" repite the command 2 seconds
+
+************** Grep ************************
+"grep #text# #donde#" you can find somenthing in a file or a directory
+"ls | grep #text#" to find a specific folder
+"grep -e #^kali#" regular expresions
+
+************** Uname *****************
+"uname" name for the SO 
+"uname -a" you can see details for the SO
+
+************ Find a file *****************
+"find / -iname "*.nse"" You can find files with .nse
+
+********************** arp-scan ********************
+Para ejecutarlo correctamente, podemos usarlo en la direccion "/usr/local/share/arp-scan"
+y ejecutamos "sudo arp-scan -l -I wlan0"
+
+**** Fix linux ****
+
+sudo apt --fix-broken install
+
+**** CHMOD ****
+
+When specifying the new_permission argument of the chmod command using the symbolic method three types of information are required.
+
+Start by using one or more of the following characters to indicate which permission group(s) to apply the changes to:
+
+u	user owner
+g	group owner
+o	others
+a	all (user owner, group owner, and others)
+‌⁠​​⁠Then choose one of the following operators to indicate how to modify the permissions:
++	add
+-	remove
+=	equals
+Lastly, use the following characters to specify the permissions type(s) to change:
+r	read
+w	write
+x	execute
+
+
+Numeric Method
+The numeric method (also called the octal method) is useful when changing many permissions on a file. It is based on the octal numbering system in which each permission type is assigned a numeric value:
+
+4	Read
+2	Write
+1	Execute
+By using a combination of numbers from 0 to 7, any possible combination of read, write and execute permissions can be specified for a single permission group set. For example:
+
+7	rwx
+6	rw-
+5	r-x
+4	r--
+3	-wx
+2	-w-
+1	--x
+0	---
+The new_permission argument is specified as three numbers, one number for each permission group. When the numeric method is used to change permissions, all nine permissions must be specified. Because of this, the symbolic method is generally easier for changing a few permissions while the numeric method is better for changes that are more drastic.
+
+For example, to set the permissions of a file named abc.txt to be rwxr-xr-- you could use the following command:
+
+root@localhost:~# chmod 754 abc.txt
+
+

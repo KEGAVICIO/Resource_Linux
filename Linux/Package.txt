@@ -1,0 +1,19 @@
+In this guide you can found how to activate package
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+BLUETHOOTH
+  
+  First check if your sistem found your card bluethooth 
+    - lspci | grep -i bluetooth 
+    - lsusb
+    - rfkill list
+
+  If you detect but you cant see the bluethooth, install the package
+    - sudo apt install bluetooth bluez blueman -y
+
+  Then start the bluethooth with this two commands
+    - sudo systemctl start bluetooth
+    - sudo systemctl enable bluetooth
+
+
