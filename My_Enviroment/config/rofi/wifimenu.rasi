@@ -1,0 +1,86 @@
+configuration {
+  location: 3;
+  xoffset: -45;
+  yoffset: 45;
+}
+
+* {
+  bg: #0E0F1A;
+  fg: #F4E4DC;
+  sel: #4B2C73;
+  font: "Hack Nerd Font 12";
+}
+
+window {
+  background-color: @bg;
+  border: 0;
+  border-radius: 8px;
+  padding: 10px;
+  width: 30%;
+}
+
+mainbox, listview, element {
+  background-color: @bg;
+}
+
+listview {
+  lines: 10;
+  fixed-height: true;
+  padding: 6px;
+  spacing: 6px;
+}
+
+element {
+  background-color: @bg;
+  text-color: @fg;
+  padding: 6px 12px;
+}
+
+element-text {
+  highlight: bold italic;
+  text-color: @fg;
+  background-color: @bg;
+}
+
+element selected {
+  background-color: @sel;
+  text-color: @fg;
+  border-radius: 6px;
+}
+
+/* --- Barra superior de dmenu (prompt + entrada) --- */
+inputbar {
+  background-color: @bg;
+  text-color: @fg;
+  padding: 6px 10px;
+  border: 0;
+}
+
+prompt {
+  background-color: @bg;
+  text-color: @fg;
+  padding: 0 6px 0 0;
+}
+
+/* El ":" que rofi añade después del prompt es otro widget */
+textbox-prompt-colon {
+  background-color: @bg;
+  text-color: @fg;
+}
+
+entry {
+  background-color: @bg;
+  text-color: @fg;
+  placeholder-color: @fg;
+  cursor: text;
+}
+
+mainbox { 
+  children: [ message, inputbar, listview ]; 
+}
+message { 
+  background-color: @bg; 
+  text-color: @fg; 
+  padding: 6px 10px; 
+}
+
