@@ -1,4 +1,4 @@
-#!/bin/bash
+#/bin/bash
 
 echo "[*] Iniciando la instalación de tu entorno Red Team..."
 
@@ -27,6 +27,7 @@ fi
 # 2. Crear el directorio principal de configuraciones si no existe
 echo "[*] Preparando directorios..."
 mkdir -p ~/.config
+mkdir -p ~/Pictures/Fonds
 
 # 3. Copiar todas las configuraciones al sistema
 echo "[*] Copiando tus dotfiles..."
@@ -36,6 +37,7 @@ cp -r config/* ~/.config/
 # Copia los archivos ocultos de tu terminal a la raíz de tu usuario
 cp .zshrc ~/.zshrc
 cp .p10k.zsh ~/.p10k.zsh
+cp wallpaper/night.png ~/Pictures/Fonds/
 
 # 4. Asignar permisos de ejecución a los scripts
 echo "[*] Dando permisos de ejecución a los scripts clave..."
